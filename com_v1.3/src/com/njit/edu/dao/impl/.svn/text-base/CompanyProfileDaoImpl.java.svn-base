@@ -1,0 +1,33 @@
+package com.gem.vsts.dao.impl;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.CompanyProfileDao;
+import com.gem.vsts.pojo.Companyprofile;
+
+/**
+ * 
+ * @author zjf
+ *
+ */
+@Transactional
+public class CompanyProfileDaoImpl extends HibernateDaoSupport implements CompanyProfileDao{
+
+	public void addCP(Companyprofile companyprofile) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(companyprofile);
+	}
+
+	public Companyprofile querybyid(int companyid) {
+		// TODO Auto-generated method stub
+		Companyprofile companyprofile=(Companyprofile) this.getHibernateTemplate().get(Companyprofile.class, companyid);
+		return companyprofile;
+	}
+
+	public void updateCP(Companyprofile companyprofile) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().update(companyprofile);
+	}
+	
+}

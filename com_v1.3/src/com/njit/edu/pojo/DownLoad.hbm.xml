@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.njit.edu.pojo">
+
+	<class name="DownLoad" table="t_DownLoad">
+
+		<id name="DownloadId" column="DownloadId">
+			<generator class="identity" />
+		</id>
+		
+		<many-to-one name="user" column="UserId" not-null="true" lazy="false" fetch="join" />
+		
+		<many-to-one name="mater" column="MaterId" not-null="true" lazy="false" fetch="join" />
+		
+		<property name="Loadtime" column="Loadtime" />
+		
+	</class>
+
+</hibernate-mapping>

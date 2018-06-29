@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+
+	<bean id="userBiz" class="com.njit.edu.biz.impl.UserBizImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean id="adminBiz" class="com.njit.edu.biz.impl.AdminBizImpl">
+		<property name="adminDao" ref="adminDao"></property>
+	</bean>
+
+	<bean id="loadBiz" class="com.njit.edu.biz.impl.DownLoadBizImpl">
+		<property name="loadDao" ref="loadDao"></property>
+	</bean>
+
+	<bean id="linkinfoBiz"
+		class="com.njit.edu.biz.impl.LinkinfoBizImpl">
+		<property name="linkinfoDao" ref="linkinfoDao"></property>
+	</bean>
+	
+	<bean id="materBiz"
+		class="com.njit.edu.biz.impl.MaterialsBizImpl">
+		<property name="materDao" ref="materDao"></property>
+	</bean>
+
+</beans>
+
+
+
+
+
+
+

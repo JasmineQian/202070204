@@ -1,0 +1,29 @@
+.mima_big {
+	height: 654px;
+	margin: 10px;
+	overflow: auto;
+	width: 570px;
+}
+
+.mima_big ul {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.mima_big ul li {
+	display: inline;
+	float: left;
+	margin: 10px;
+	text-align: center;
+	width: 70px;
+}
+
+.mima_big img {
+	border: 1px solid #CCCCCC;
+	display: block;
+	height: 64px;
+	margin-bottom: 5px;
+	padding: 2px;
+	width: 64px;
+}

@@ -1,0 +1,64 @@
+package com.gem.vsts.dao.impl;
+
+import java.util.List;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.StockinfoDao;
+import com.gem.vsts.pojo.Stockinfo;
+
+/**
+ * 股票信息实现
+ * @author cyg
+ *
+ */
+@Transactional
+public class StockinfoDaoImpl extends HibernateDaoSupport implements StockinfoDao{
+	
+	//添加股票信息(管理员权限)
+	public void addStockinfo(Stockinfo stockinfo) {
+		// TODO Auto-generated method stub
+		
+		this.getHibernateTemplate().save(stockinfo);
+		
+	}
+	
+	//删除股票信息(管理员权限)
+	public void delStockinfo(String stockid) {
+		// TODO Auto-generated method stub
+		
+		Stockinfo stockinfo = (Stockinfo)this.getHibernateTemplate().get(Stockinfo.class, stockid);
+		this.getHibernateTemplate().delete(stockinfo);
+	}
+	
+	//更新股票信息(webservice)
+	public void modifyStockinfo(String stockid) {
+		// TODO Auto-generated method stub
+		
+		Stockinfo stockinfo = (Stockinfo)this.getHibernateTemplate().get(Stockinfo.class, stockid);
+	    this.getHibernateTemplate().update(stockinfo);
+	}
+	
+	//查询所以股票信息(返回list需要分页)
+	public List queryAllStockinfo() {
+		// TODO Auto-generated method stub
+		List list = this.getHibernateTemplate().find("from Stockinfo");
+		
+		return list;
+	}
+    
+	//查询股票信息(通过ID)
+	public Stockinfo queryStockinfoById(String stockid) {
+		// TODO Auto-generated method stub
+	
+		return (Stockinfo)this.getHibernateTemplate().get(Stockinfo.class, stockid);
+	}
+
+	public void updateStock(Stockinfo stockinfo) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().update(stockinfo);
+		
+	}
+  
+}

@@ -1,0 +1,53 @@
+package com.gem.vsts.biz.impl;
+
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.biz.UserStockinfoBiz;
+import com.gem.vsts.dao.UserStockinfoDao;
+import com.gem.vsts.pojo.UserStockinfo;
+
+/**
+ * 持有股票biz层实现类
+ * @author zjf
+ *
+ */
+
+@Transactional
+public class UserStockinfoBizImpl implements UserStockinfoBiz{
+	
+	//定义类对象usiDao
+	private UserStockinfoDao userstockinfoDao;
+
+
+	public void addUserStockinfo(UserStockinfo usi) {
+		// TODO Auto-generated method stub
+		userstockinfoDao.addUserStockinfo(usi);
+	}
+
+	public void delUserStockinfo(int DealId) {
+		// TODO Auto-generated method stub
+		userstockinfoDao.delUserStockinfo(DealId);
+	}
+
+	public List queryAllUserStockinfo(int userId) {
+		// TODO Auto-generated method stub
+		return userstockinfoDao.queryAllUserStockinfo(userId);
+	}
+
+	public void setUserstockinfoDao(UserStockinfoDao userstockinfoDao) {
+		this.userstockinfoDao = userstockinfoDao;
+	}
+
+	public UserStockinfo queryUserStockinfoById(int UserId, String stockId) {
+		userstockinfoDao.queryUserStockinfoById(UserId, stockId);
+		return (UserStockinfo)userstockinfoDao.queryUserStockinfoById(UserId, stockId);
+	}
+
+	public void modifyUserStockinfo(UserStockinfo UserStockinfo) {
+		// TODO Auto-generated method stub
+		userstockinfoDao.modifyUserStockinfo(UserStockinfo);
+	}
+
+}

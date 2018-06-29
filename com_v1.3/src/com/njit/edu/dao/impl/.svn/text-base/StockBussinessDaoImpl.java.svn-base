@@ -1,0 +1,543 @@
+package com.gem.vsts.dao.impl;
+
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import javax.mail.Flags.Flag;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
+
+import com.gem.vsts.biz.UserBiz;
+import com.gem.vsts.biz.impl.UserBizImpl;
+import com.gem.vsts.dao.StockBussinessDao;
+import com.gem.vsts.dao.StockinfoDao;
+import com.gem.vsts.dao.TradeDao;
+import com.gem.vsts.dao.TradeRecordDao;
+import com.gem.vsts.dao.UserDao;
+import com.gem.vsts.dao.UserStockinfoDao;
+import com.gem.vsts.pojo.Stockinfo;
+import com.gem.vsts.pojo.Trade;
+import com.gem.vsts.pojo.TradeRecord;
+import com.gem.vsts.pojo.User;
+import com.gem.vsts.pojo.UserStockinfo;
+import com.gem.vsts.util.WebserviceUtil;
+
+/**
+ * 股票交易(买卖)具体实现
+ * @author cyg
+ * 
+ * 
+ * 说明：
+ * *买入操作
+ * 
+ * 
+ * 
+ * *卖出操作
+ */
+
+public class StockBussinessDaoImpl implements StockBussinessDao {
+	
+	WebserviceUtil webserviceUtil = new WebserviceUtil();
+	List list_webservice = new ArrayList();
+	//注入UserDao
+	private UserDao userDao;
+	
+	//注入TradeDao
+	private TradeDao tradeDao;
+	
+	//注入UserStockinfoDao
+	private UserStockinfoDao userStockinfoDao;
+	
+	//注入StockinfoDao
+	private StockinfoDao stockinfoDao;
+	
+	//注入TradeRecordDao
+	private TradeRecordDao traderecordDao;
+	//salePrice 从买卖1-5 Class中获取 (依赖StockId)
+	//判断是否是委托买入(买价与股票最低价(webservice)相比)
+	 /** 定时刷新
+	   * 判断此时间内委托交易是否完成
+	   * if 完成 更新相关信息
+	   * else 撤单 更新相关信息
+	   */
+	public boolean IsProxyBuyOver(double BuyPrice){
+		boolean flag = false; 
+		double MinPrice2 =Double.parseDouble(list_webservice.get(7).toString());
+		flag = BuyPrice>MinPrice2;
+		return flag;
+	}
+	
+	public boolean IsProxySellOver(double SellPrice){
+		boolean flag = false; 
+		double NewPrice =Double.parseDouble(list_webservice.get(3).toString());
+		flag = SellPrice<NewPrice;
+		return flag;
+	}
+	/**
+	 * if买价<股票最低价 委托买入
+	 * else 实时买入 按最低价买入
+	 * 
+	 */
+
+	/*
+	 * 委托买入操作
+	 */
+	 public void BuyProxyStock(int UserId,String StockId,double BuyPrice,int BuyCount){
+			User user = userDao.queryUserById(UserId);
+			Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		
+			
+			
+			   //添加到挂单表中;
+				Trade trade = new Trade();
+				trade.setUser(user);
+				trade.setStockinfo(stockinfo);
+				trade.setTradeType("埋买");
+				trade.setCount(BuyCount);
+				trade.setPrice(BuyPrice);
+				trade.setFreezedFunds(BuyPrice*BuyCount);
+				trade.setSubtime(new Date());
+				
+				tradeDao.addTrade(trade);
+				
+				//增加交易记录；
+				TradeRecord traderecord = new TradeRecord();
+				traderecord.setUser(user);
+				traderecord.setStockinfo(stockinfo);
+				traderecord.setTradeType("埋买");
+				traderecord.setTradeCount(BuyCount);
+				traderecord.setTradePrice(BuyPrice);
+				traderecord.setFreezedFunds(BuyPrice*BuyCount);
+				traderecord.setTradedateime(new Date());
+				traderecord.setResult("待完成");
+				
+				traderecordDao.addTradeRecord(traderecord);
+			
+				//更新现有资金信息;
+				
+				user.setNowAccount(user.getNowAccount()-BuyPrice*BuyCount);
+				userDao.modifyUser(user);
+				
+				
+				//监听委托买入
+			//	ProxyBuy(UserId,StockId);
+					 
+	 }
+	 
+	 /*
+	  * 实时买入操作
+	  * 
+	  */
+	 public void BuyNowStock(int UserId,String StockId,double MinPrice,int BuyCount){
+		   /*
+		    * 实时买入
+		    */
+			//查找卖家挂单所有记录 order by Price
+	
+			//double MinPrice1 =Double.parseDouble(list_webservice.get(7).toString());
+			//按最低价购买
+		 
+		    User user = userDao.queryUserById(UserId);
+			Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+			
+			
+			//增加交易记录；
+			TradeRecord traderecord = new TradeRecord();
+			traderecord.setUser(user);
+			traderecord.setStockinfo(stockinfo);
+			traderecord.setTradeType("实时买入");
+			traderecord.setTradeCount(BuyCount);
+			traderecord.setTradePrice(MinPrice);
+			traderecord.setFreezedFunds(MinPrice*BuyCount);
+			traderecord.setTradedateime(new Date());
+			traderecord.setResult("完成");
+			
+			traderecordDao.addTradeRecord(traderecord);
+		   
+			//更新或添加持有股票信息；
+			//userStockinfoDao.queryUserStockinfoById(UserId, StockId);
+			
+			//判断用户持有股票表中是否有此股票信息
+			if(userStockinfoDao.queryUserStockinfoById(UserId, StockId)!=null){
+				// 从数据库中获取userStockinfo;
+				UserStockinfo  userStockinfo = userStockinfoDao.queryUserStockinfoById(UserId, StockId);
+				userStockinfo.setCount(userStockinfo.getCount()+BuyCount);
+				userStockinfo.setCost(userStockinfo.getCost()+MinPrice*BuyCount);
+			    //更新此用户持有该股票信息
+				userStockinfoDao.modifyUserStockinfo(userStockinfo);
+			}else{
+		
+				UserStockinfo userStockinfo1 = new UserStockinfo();
+				userStockinfo1.setUser(user);
+				userStockinfo1.setStockinfo(stockinfo);
+				userStockinfo1.setCount(BuyCount);
+				userStockinfo1.setCost(MinPrice*BuyCount);
+				//添加一条持有该股票信息的记录
+				userStockinfoDao.addUserStockinfo(userStockinfo1);
+				
+			}
+			//立即更新现有资金信息
+			user.setNowAccount(user.getNowAccount()-MinPrice*BuyCount);
+			userDao.modifyUser(user);
+	 }
+	
+	 
+
+	
+	/*
+	 * 委托买入监听器
+	 */
+	public void ProxyBuy(int UserId,String StockId){
+		User user = userDao.queryUserById(UserId);
+		Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		List list_tradeList = tradeDao.queryTradeByIdType(UserId,StockId,"埋买");
+		
+		for(int i = 0;i<list_tradeList.size();i++){
+			Trade trade1 = (Trade)list_tradeList.get(i);
+			int td = trade1.getTradeId();
+			double BuyPrice = trade1.getPrice();
+			Date date1 = trade1.getSubtime();
+			   int  Count = trade1.getCount();
+			
+			//如果委托买入成功
+			if(IsProxyBuyOver(BuyPrice)){
+			   //挂单中删除一条挂单信息		
+				tradeDao.delTrade(td);
+			   //添加一条交易记录
+				TradeRecord traderecord1 =new TradeRecord();
+				
+				traderecord1.setUser(user);
+				traderecord1.setStockinfo(stockinfo);
+				traderecord1.setTradeType("埋单买入");
+				traderecord1.setTradeCount(Count);
+				traderecord1.setTradePrice(BuyPrice);
+				traderecord1.setTradedateime(new Date());
+				traderecord1.setResult("完成");
+				
+			    traderecordDao.addTradeRecord(traderecord1);
+			    
+			  //判断用户持有股票表中是否有此股票信息
+				if(userStockinfoDao.queryUserStockinfoById(UserId, StockId)!=null){
+					// 从数据库中获取userStockinfo;
+					//更新此用户持有该股票信息
+					UserStockinfo  userStockinfo = userStockinfoDao.queryUserStockinfoById(UserId, StockId);
+					userStockinfo.setCount(userStockinfo.getCount()+Count);
+					userStockinfo.setCost(userStockinfo.getCost()+BuyPrice*Count);
+				    
+					userStockinfoDao.modifyUserStockinfo(userStockinfo);
+				}else{
+					//添加一条持有该股票信息的记录
+					UserStockinfo userStockinfo1 = new UserStockinfo();
+					userStockinfo1.setUser(user);
+					userStockinfo1.setStockinfo(stockinfo);
+					userStockinfo1.setCount(Count);
+					userStockinfo1.setCost(BuyPrice*Count);
+					
+					userStockinfoDao.addUserStockinfo(userStockinfo1);
+					
+				}
+			}else{
+				//判断规定时间内是否买入;
+				//Calendar cal = Calendar.getInstance();
+			    Date date2 = new Date();
+			    long time = date2.getTime()-date1.getTime();
+				if(time/(24*60*60*1000)>2){
+				/*
+				 * 系统撤单
+				 */
+				//挂单中删除此记录
+			      tradeDao.delTrade(td);
+			    //添加一条交易记录
+			     TradeRecord traderecord2 =new TradeRecord();
+					
+			     traderecord2.setUser(user);
+				 traderecord2.setStockinfo(stockinfo);
+				 traderecord2.setTradeType("埋买");
+				 traderecord2.setTradeCount(Count);
+				 traderecord2.setTradePrice(BuyPrice);
+				 traderecord2.setTradedateime(new Date());
+				 traderecord2.setResult("用户撤单");
+					
+				 traderecordDao.addTradeRecord(traderecord2);
+				 
+				 //返还冻结资金;
+				 user.setNowAccount(user.getNowAccount()+Count*BuyPrice);
+					userDao.modifyUser(user);
+				}else{
+					/* 未买入
+					 * 每隔一定时间调用自己
+					 */
+						
+				try {
+					//刷新
+					Thread.sleep(900000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				
+				ProxyBuy(UserId,StockId);
+			 }
+			}	
+		}
+	}
+	
+	/*
+	 * 委托卖出监听器
+	 */
+	public void ProxySell(int UserId,String StockId){
+		UserStockinfo  userStockinfo3  = userStockinfoDao.queryUserStockinfoById(UserId, StockId);
+		User user = userDao.queryUserById(UserId);
+		Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		List list_tradeList = tradeDao.queryTradeByIdType(UserId,StockId,"埋卖");
+		
+		for(int i = 0;i<list_tradeList.size();i++){
+			Trade trade1 = (Trade)list_tradeList.get(i);
+			int td = trade1.getTradeId();
+			double SellPrice = trade1.getPrice();
+			Date date1 = trade1.getSubtime();
+			int  Count = trade1.getCount();
+			
+			//如果委托卖出成功
+			if(IsProxySellOver(SellPrice)){
+			   //挂单中删除一条挂单信息		
+				tradeDao.delTrade(td);
+			   //添加一条交易记录
+				TradeRecord traderecord1 =new TradeRecord();
+				
+				traderecord1.setUser(user);
+				traderecord1.setStockinfo(stockinfo);
+				traderecord1.setTradeType("埋单卖出");
+				traderecord1.setTradeCount(Count);
+				traderecord1.setTradePrice(SellPrice);
+				traderecord1.setTradedateime(new Date());
+				traderecord1.setResult("完成");
+				
+			    traderecordDao.addTradeRecord(traderecord1);
+			    
+			  //判断用户持有股票表中是否有此股票信息
+				// 从数据库中获取userStockinfo;
+			    
+				userStockinfo3.setCount(userStockinfo3.getCount()-Count);
+				userStockinfo3.setCost(userStockinfo3.getCost()+SellPrice*Count);
+			    //更新此用户持有该股票信息
+				userStockinfoDao.modifyUserStockinfo(userStockinfo3);
+	           
+				//用户持有该股票全部卖完
+		        if(userStockinfo3.getCount()-Count==0){
+		        	
+				   userStockinfoDao.delUserStockinfo(userStockinfo3.getDealId());
+		        }
+			
+			   //立即更新现有资金信息
+			   user.setNowAccount(user.getNowAccount()+SellPrice*Count);
+			   userDao.modifyUser(user);
+			}else{
+				//判断规定时间内是否卖出;
+				//Calendar cal = Calendar.getInstance();
+			    Date date2 = new Date();
+			    long time = date2.getTime()-date1.getTime();
+				if(time/(24*60*60*1000)>2){
+				/*
+				 * 系统撤单
+				 */
+				//挂单中删除此记录
+			      tradeDao.delTrade(td);
+			    //添加一条交易记录
+			     TradeRecord traderecord2 =new TradeRecord();
+					
+			     traderecord2.setUser(user);
+				 traderecord2.setStockinfo(stockinfo);
+				 traderecord2.setTradeType("埋卖");
+				 traderecord2.setTradeCount(Count);
+				 traderecord2.setTradePrice(SellPrice);
+				 traderecord2.setTradedateime(new Date());
+				 traderecord2.setResult("用户撤单");
+					
+				 traderecordDao.addTradeRecord(traderecord2);
+				 
+
+				}else{
+					/* 未卖出
+					 * 每隔一定时间调用自己
+					 */
+						
+				try {
+					//刷新
+					Thread.sleep(900000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				ProxyBuy(UserId,StockId);
+			 }
+			}	
+		}
+	}
+	
+	/*
+	 * 实时卖出操作
+	 * 
+	 */
+	public void SellNowStock(int UserId,String StockId, double NowPrice, int SellCount){
+		
+		User user = userDao.queryUserById(UserId);
+		Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		TradeRecord traderecord3 = new TradeRecord();
+		traderecord3.setUser(user);
+		traderecord3.setStockinfo(stockinfo);
+		traderecord3.setTradeType("实时卖出");
+		traderecord3.setTradeCount(SellCount);
+		traderecord3.setTradePrice(NowPrice);
+		traderecord3.setTradedateime(new Date());
+		traderecord3.setResult("完成");
+		
+		traderecordDao.addTradeRecord(traderecord3);
+		
+		    //更新或添加持有股票信息;
+	
+			// 从数据库中获取userStockinfo;
+		    UserStockinfo userStockinfo = userStockinfoDao.queryUserStockinfoById(UserId, StockId);
+			userStockinfo.setCount(userStockinfo.getCount()-SellCount);
+			userStockinfo.setCost(userStockinfo.getCost()+NowPrice*SellCount);
+		    //更新此用户持有该股票信息
+			userStockinfoDao.modifyUserStockinfo(userStockinfo);
+           
+			//用户持有该股票全部卖完
+	        if(userStockinfo.getCount()-SellCount==0){
+	        	
+			   userStockinfoDao.delUserStockinfo(userStockinfo.getDealId());
+	        }
+		
+		   //立即更新现有资金信息
+		   user.setNowAccount(user.getNowAccount()+NowPrice*SellCount);
+		   userDao.modifyUser(user);
+	}
+	/*
+	 * 委托卖出操作
+	 */
+	public void SellProxyStock(int UserId,String StockId, double SellPrice, int SellCount){
+		
+		User user = userDao.queryUserById(UserId);
+		Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		 //添加到挂单表中;
+		Trade trade1 = new Trade();
+		trade1.setUser(user);
+		trade1.setStockinfo(stockinfo);
+		trade1.setTradeType("埋卖");
+		trade1.setCount(SellCount);
+		trade1.setPrice(SellPrice);
+		trade1.setTotalFunds(SellCount*SellPrice);
+		trade1.setSubtime(new Date());
+		
+		tradeDao.addTrade(trade1);
+		
+	//添加交易记录
+	TradeRecord traderecord4 = new TradeRecord();
+	traderecord4.setUser(user);
+	traderecord4.setStockinfo(stockinfo);
+	traderecord4.setTradeType("埋卖");
+	traderecord4.setTradeCount(SellCount);
+	traderecord4.setTradePrice(SellPrice);
+	traderecord4.setTotalPrice(SellCount*SellPrice);
+	traderecord4.setTradedateime(new Date());
+	traderecord4.setResult("待完成");
+	
+	traderecordDao.addTradeRecord(traderecord4);
+	}
+	
+	
+	//购买股票
+	public void BuyStock(int UserId,String StockId, double BuyPrice, int BuyCount) {
+		//计算手续费
+		//0.003
+		
+		
+		// 根据StockId 获取 MinPrice(卖出最低价)
+		
+		list_webservice = webserviceUtil.getStuff_info(StockId);
+		double MinPrice =Double.parseDouble(list_webservice.get(7).toString());
+
+		
+		/*
+		 * 委托买入操作
+		 */
+		if(BuyPrice<MinPrice){
+		
+			
+				
+			//委托买入操作
+			BuyProxyStock(UserId,StockId,BuyPrice,BuyCount);
+			
+			//监听委托买入
+			ProxyBuy(UserId,StockId);  
+		  
+	  }
+		else{		
+	        //实时买入
+			//按最低价购买
+			BuyNowStock( UserId,StockId,MinPrice,BuyCount);
+	   }
+	}
+	//出售股票
+	public void SellStock(int UserId,String StockId, double SellPrice, int SellCount) {
+		//UserStockinfo  userStockinfo2 = new UserStockinfo();
+		/*
+		 * 实时卖出 if SellPrice<=NowPrice;按照现价卖出
+		 * else if SellPrice>NowPrice;委托卖出
+		 * 		  
+		 */
+		/*
+		 * 实时卖出操作
+		 */
+//		User user = userDao.queryUserById(UserId);
+//		Stockinfo stockinfo = stockinfoDao.queryStockinfoById(StockId);
+		list_webservice = webserviceUtil.getStuff_info(StockId);
+		double NowPrice =Double.parseDouble(list_webservice.get(3).toString());
+		if(SellPrice<=NowPrice){
+			//增加交易记录；
+			SellNowStock(UserId, StockId,NowPrice ,SellCount);
+		}else{
+			/*
+			 * 委托卖出操作
+			 */
+		  SellProxyStock(UserId, StockId, SellPrice, SellCount);
+		
+		//监听委托卖出
+		  ProxySell(UserId,StockId);
+		}
+		
+	}
+
+    
+    public void setUserDao(UserDao userDao) {
+    	this.userDao = userDao;
+    }
+    
+    
+    public void setUserStockinfoDao(UserStockinfoDao userStockinfoDao) {
+    	this.userStockinfoDao = userStockinfoDao;
+    }
+
+
+	public void setTradeDao(TradeDao tradeDao) {
+		this.tradeDao = tradeDao;
+	}
+
+
+	public void setTraderecordDao(TradeRecordDao traderecordDao) {
+		this.traderecordDao = traderecordDao;
+	}
+	public void setStockinfoDao(StockinfoDao stockinfoDao) {
+		this.stockinfoDao = stockinfoDao;
+	}
+
+	
+
+
+}

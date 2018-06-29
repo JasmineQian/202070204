@@ -1,0 +1,47 @@
+package com.gem.vsts.dao.impl;
+
+import java.util.List;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+import com.gem.vsts.dao.TradeRecordDao;
+import com.gem.vsts.pojo.TradeRecord;
+
+public class TradeRecordDaoImpl extends HibernateDaoSupport implements TradeRecordDao {
+    
+	
+	//添加交易记录
+	public void addTradeRecord(TradeRecord traderecord) {
+		// TODO Auto-generated method stub
+		
+		this.getHibernateTemplate().save(traderecord);
+		//System.out.print("------add------");
+	}
+	
+	//删除交易记录
+	public void delTradeRecord(int TradeId) {
+		// TODO Auto-generated method stub
+		TradeRecord traderecord=(TradeRecord)this.getHibernateTemplate().get(TradeRecord.class, TradeId);
+		this.getHibernateTemplate().delete(traderecord);
+	}
+
+	//修改交易记录
+	public void modifyTradeRecord(int TradeId) {
+		// TODO Auto-generated method stub
+		TradeRecord traderecord=(TradeRecord)this.getHibernateTemplate().get(TradeRecord.class, TradeId);
+		this.getHibernateTemplate().update(traderecord);
+	}
+
+	//查询所有交易记录(按时间排序)
+	public List queryAllTradeRecord() {
+		// TODO Auto-generated method stub
+		List list = this.getHibernateTemplate().find("from TradeRecord");
+		return list;
+	}
+	//根据用户ID查询用户交易记录
+	public List queryTradeRecordById(int userId) {
+		// TODO Auto-generated method stub
+		return this.getHibernateTemplate().find("from TradeRecord tr where tr.user.UserId="+userId);
+	}
+
+}

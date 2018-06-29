@@ -1,0 +1,309 @@
+BODY {
+	background: none repeat scroll 0 0 #1c1c1c;
+	color: #333333;
+	font-size: 12px;
+	margin: 0;
+	padding: 0;
+}
+
+
+/*对管理员登录后台的超链接的样式*/
+.a1:link {
+	COLOR: #FEAE00;
+	TEXT-DECORATION: underline;
+	font-size: 12px;
+}
+
+.a1:visited {
+	COLOR: #FEAE00;
+	TEXT-DECORATION: underline;
+	font-size: 12px;
+}
+
+.a1:active {
+	COLOR: #FEAE00;
+	TEXT-DECORATION: underline;
+	font-size: 12px;
+}
+
+.a1:hover {
+	COLOR: #FEAE00;
+	text-decoration: underline;
+	font-size: 12px;
+}
+
+/*设置管理员登录页面的text样式*/
+.bgtext {
+	font-family: "宋体";
+	font-size: 12pt;
+	border: 1px solid #E8A10B;
+}
+
+/*设置管理员登录页面的按钮样式*/
+.bgButtoninput {
+	font-family: "宋体";
+	font-size: 12pt;
+	border: 0px solid #E8A10B;
+}
+
+/*设置后台页面中链接样式（上半部分）*/
+.a2:link {
+	COLOR: #ffffff;
+	TEXT-DECORATION: none;
+	font-size: 16px;
+}
+
+.a2:visited {
+	COLOR: #ffffff;
+	TEXT-DECORATION: none;
+	font-size: 16px;
+}
+
+.a2:active {
+	COLOR: #ffffff;
+	TEXT-DECORATION: none;
+	font-size: 16px;
+}
+
+.a2:hover {
+	COLOR: #FEAE00;
+	text-decoration: none;
+	font-size: 16px;
+}
+
+/*设置后台页面中左侧部分的超链接（上半部分）*/
+.a3:link {
+	COLOR: #855106;
+	TEXT-DECORATION: none;
+	font-size: 12px;
+}
+
+.a3:visited {
+	COLOR: #855106;
+	TEXT-DECORATION: none;
+	font-size: 12px;
+}
+
+.a3:active {
+	COLOR: #855106;
+	TEXT-DECORATION: none;
+	font-size: 12px;
+}
+
+.a3:hover {
+	COLOR: #FF6600;
+	text-decoration: none;
+	font-size: 12px;
+}
+
+/*用户的各个操作链接  */
+.a4:link {
+	COLOR: #FFFFFF;
+	TEXT-DECORATION: underline;
+	font-size: 14px;
+}
+
+.a4:visited {
+	COLOR: #FFFFFF;
+	TEXT-DECORATION: none;
+	font-size: 14px;
+}
+
+.a4:active {
+	COLOR: #FFFFFF;
+	TEXT-DECORATION: none;
+	font-size: 14px;
+}
+
+.a4:hover {
+	COLOR: #FFFFFF;
+	text-decoration: underline;
+	font-size: 14px;
+}
+
+/*管理员进入后台的超链接的样式*/
+.a5:link {
+	COLOR: #960001;
+	TEXT-DECORATION: underline;
+	font-size: 14px;
+}
+
+.a5:visited {
+	COLOR: #960001;
+	TEXT-DECORATION: none;
+	font-size: 14px;
+}
+
+.a5:active {
+	COLOR: #960001;
+	TEXT-DECORATION: none;
+	font-size: 14px;
+}
+
+.a5:hover {
+	COLOR: #FFFFFF;
+	text-decoration: underline;
+	font-size: 14px;
+}
+
+/*全局的超链接*/
+a:hover {
+	font-size: 12pt;
+	color: #FF690C;
+}
+
+a {
+	font-size: 12pt;
+	text-decoration: none;
+	color: #000000;
+	noline: expression(this .       onfocus =       this .       blur);
+}
+
+/*将提交按钮的边框去掉*/
+.input1 {
+	font-family: "宋体";
+	font-size: 9pt;
+	color: #333333;
+	border: 0px solid #999999;
+}
+
+img {
+	border: 0;
+}
+
+.img1 {
+	border: 1;
+}
+
+.blue {
+	font-size: 9pt;
+	color: #034683;
+}
+
+.bgcolor {
+	font-size: 9pt;
+	color: #1980DB;
+}
+
+.btn_grey {
+	font-family: "宋体";
+	font-size: 9pt;
+	color: #333333;
+	background-color: #eeeeee;
+	cursor: hand;
+	padding: 1px;
+	height: 19px;
+	border-top: 1px solid #FFFFFF;
+	border-right: 1px solid #666666;
+	border-bottom: 1px solid #666666;
+	border-left: 1px solid #FFFFFF;
+}
+
+input {
+	font-family: "宋体";
+	font-size: 9pt;
+	color: #333333;
+	border: 1px solid #999999;
+}
+
+/*---------------------------*/
+.in_top {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: url("gj.gif") repeat scroll 0 0 transparent;
+    border-color: #999999 #BBBBBB;
+    border-left: 1px solid #BBBBBB;
+    border-right: 1px solid #BBBBBB;
+    border-style: solid;
+    border-width: 5px 1px;
+    height: 234px;
+    margin: 0 auto;
+    width: 998px;
+}
+
+.top {
+    clear: both;
+    height: 66px;
+    margin: 0 auto;
+    width: 1000px;
+}
+.top img {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+.top span {
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    margin-left: 20px;
+    margin-top: 25px;
+    width: 310px;
+}
+.top span h1 {
+    color: #FFFFFF;
+    display: inline;
+    font-family: "宋体";
+    font-size: 14px;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+.top span b {
+    border: 1px solid #2B81BF;
+}
+.top span b input {
+    background: url("nav.gif") no-repeat scroll -233px -10px #FFFFFF;
+    border: 2px solid #E0E0E0;
+    color: #999999;
+    padding: 6px 5px 4px 23px;
+    vertical-align: middle;
+    width: 300px;
+}
+.top span a:link, .top span a:visited, .top span a:active {
+    color: #FFFFFF;
+    margin-left: 12px;
+}
+.top span a:hover {
+    color: #FFFF00;
+    margin-left: 12px;
+}
+.top ul span {
+    float: left;
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0;
+    padding: 10px 0 9px;
+    text-align: right;
+    width: 530px;
+}
+.top ul {
+    float: right;
+    width: 530px;
+}
+.top ul li {
+    background: url("nav.gif") repeat scroll -71px 0 transparent;
+    float: right;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 29px;
+    margin-left: 5px;
+    text-align: center;
+    width: 70px;
+}
+.top ul li a:link, .top ul li a:visited, .top ul li a:active {
+    color: #FFFFFF;
+    display: block;
+    margin: 0;
+}
+.top ul li a:hover {
+    background: url("nav.gif") repeat scroll -142px 50% transparent;
+    color: #002B63;
+    margin: 0;
+    text-decoration: none;
+}
+

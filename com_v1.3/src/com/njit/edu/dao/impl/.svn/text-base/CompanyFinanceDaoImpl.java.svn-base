@@ -1,0 +1,33 @@
+package com.gem.vsts.dao.impl;
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.CompanyFinanceDao;
+import com.gem.vsts.pojo.CompanyFinance;
+
+/**
+ * 
+ * @author zjf
+ *
+ */
+@Transactional
+public class CompanyFinanceDaoImpl extends HibernateDaoSupport implements CompanyFinanceDao{
+
+	public void addCF(CompanyFinance companyfinance) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(companyfinance);
+	}
+
+	public CompanyFinance querybyid(int financeid) {
+		// TODO Auto-generated method stub
+		CompanyFinance companyfinance=(CompanyFinance) this.getHibernateTemplate().get(CompanyFinance.class, financeid);
+		return companyfinance;
+	}
+
+	public void updateCF(CompanyFinance companyfinance) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().update(companyfinance);
+	}
+
+}

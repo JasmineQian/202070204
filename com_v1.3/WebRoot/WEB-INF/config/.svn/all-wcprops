@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/Acxiom/!svn/ver/2461/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config
+END
+applicationContext-tx.xml
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/Acxiom/!svn/ver/629/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/applicationContext-tx.xml
+END
+applicationContext-actions.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Acxiom/!svn/ver/629/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/applicationContext-actions.xml
+END
+applicationContext-service.xml
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svn/Acxiom/!svn/ver/629/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/applicationContext-service.xml
+END
+struts-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/Acxiom/!svn/ver/2461/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/struts-config.xml
+END
+applicationContext-dao.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Acxiom/!svn/ver/629/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/applicationContext-dao.xml
+END
+applicationContext-hbn.xml
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/Acxiom/!svn/ver/694/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/applicationContext-hbn.xml
+END
+hibernate.cfg.xml
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/Acxiom/!svn/ver/629/VSTS/JavaTeam2/vsts/WebRoot/WEB-INF/config/hibernate.cfg.xml
+END

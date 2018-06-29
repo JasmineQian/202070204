@@ -1,0 +1,47 @@
+.jas {
+    background: none repeat scroll 0 0 #F1F1F1;
+    border-color: #CCCCCC #CCCCCC -moz-use-text-color;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    text-align: left;
+    width: 950px;
+}
+
+
+/*
+.jas {
+    background: none repeat scroll 0 0 #F1F1F1;
+    border-color: #CCCCCC #CCCCCC -moz-use-text-color;
+    border-style: solid solid none;
+    border-width: 1px 1px medium;
+    float: left;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 20px;
+    padding: 0 0 0 10px;
+    text-align: left;
+    width: 950px;
+}
+*/
+
+
+.jass2{
+	font-size:12pt;
+	background: none repeat scroll 0 0 #FFFFFF;
+	border-color: #DDDDDD #BBBBBB -moz-use-text-color;
+	border-left: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+	border-style: solid solid none;
+	border-width: 1px 1px 0;
+	clear: both;
+	line-height: 20px;
+	margin: 0 auto;
+	padding: 16px 0;
+	text-align: center;
+	width: 950px;
+	}

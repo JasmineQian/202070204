@@ -1,0 +1,48 @@
+package com.gem.vsts.biz.impl;
+
+import java.util.List;
+
+import com.gem.vsts.biz.TradeRecordBiz;
+import com.gem.vsts.dao.TradeRecordDao;
+import com.gem.vsts.pojo.TradeRecord;
+
+public class TradeRecordBizImpl implements TradeRecordBiz {
+
+	// 注入spring
+	private TradeRecordDao tradeRecordDao;
+
+
+	public void setTradeRecordDao(TradeRecordDao tradeRecordDao) {
+		this.tradeRecordDao = tradeRecordDao;
+	}
+
+	public void addTradeRecord(TradeRecord traderecord) {
+		// TODO Auto-generated method stub
+		tradeRecordDao.addTradeRecord(traderecord);
+
+	}
+
+	// 删除用户交易记录
+	public void delTradeRecord(int TradeId) {
+		// TODO Auto-generated method stub
+		tradeRecordDao.delTradeRecord(TradeId);
+	}
+
+	// 修改用户交易记录
+	public void modifyTradeRecord(int TradeId) {
+		// TODO Auto-generated method stub
+		tradeRecordDao.modifyTradeRecord(TradeId);
+	}
+
+	public List queryAllTradeRecord() {
+		// TODO Auto-generated method stub
+		return tradeRecordDao.queryAllTradeRecord();
+	}
+
+	// 根据用户ID查询用户交易记录
+	public List queryTradeRecordById(int userId) {
+		// TODO Auto-generated method stub
+		return tradeRecordDao.queryTradeRecordById(userId);
+	}
+
+}

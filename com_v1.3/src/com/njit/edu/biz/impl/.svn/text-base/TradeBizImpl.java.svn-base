@@ -1,0 +1,55 @@
+package com.gem.vsts.biz.impl;
+
+import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.biz.TradeBiz;
+import com.gem.vsts.dao.TradeDao;
+import com.gem.vsts.pojo.Trade;
+/*
+ * 挂单、撤单操作服务层实现类
+ * 
+ */
+@Transactional
+public class TradeBizImpl implements TradeBiz{
+	
+	private TradeDao tradedao;
+
+	public void setTradedao(TradeDao tradedao) {
+		this.tradedao = tradedao;
+	}
+
+	public void addTrade(Trade trade) {
+
+	//新增挂单
+
+		// TODO Auto-generated method stub
+		tradedao.addTrade(trade);
+	}
+	
+	//撤单
+	public void delTrade(int TradeId) {
+		// TODO Auto-generated method stub
+		tradedao.delTrade(TradeId);
+	}
+
+
+	public List  queryTradeByIdType(int UserId,String StockId, String TradeType) {
+		// TODO Auto-generated method stub
+		return tradedao.queryTradeByIdType(UserId,StockId, TradeType);
+	}
+
+	public List queryByName(String username) {
+		// TODO Auto-generated method stub
+		return tradedao.queryByName(username);
+	}
+	
+	//根据挂单号查找挂单
+	public Trade queryById(int tradeid){
+		return tradedao.queryByTradeId(tradeid);
+	};
+
+	
+
+}

@@ -1,0 +1,63 @@
+package com.gem.vsts.dao.impl;
+
+import java.util.List;
+
+
+
+
+import org.hibernate.Query;
+
+
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.TradeDao;
+import com.gem.vsts.pojo.Trade;
+import com.gem.vsts.pojo.User;
+
+/**
+ * Dao接口实现类
+ * @author AuZn
+ *
+ */
+
+@Transactional
+public class TradeDaoImpl extends HibernateDaoSupport implements TradeDao{
+
+	
+	//新增挂单
+	public void addTrade(Trade trade) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(trade);
+	}
+    
+	//撤单
+	public void delTrade(int TradeId) {
+		// TODO Auto-generated method stub
+		Trade  trade= (Trade)this.getHibernateTemplate().get(Trade.class, TradeId);
+		this.getHibernateTemplate().delete(trade);
+	}
+	//查询当前用户所有挂单
+    public List queryByName(String username) {
+		String hql = "from Trade trade where trade.user.UserName=?";
+		Query query = this.getSession().createQuery(hql).setParameter(0, username);
+		//List list=this.getHibernateTemplate().find("from Trade");
+		return query.list();
+
+	}
+    
+	//查找卖家挂单记录(通过股票ID,交易类别="埋卖"查找到此挂单记录)
+	public List queryTradeByIdType(int UserId,String StockId, String TradeType) {
+		// TODO Auto-generated method stub
+		String hql = "from Trade trade where trade.user.UserId=? and trade.stockinfo.StockId=?  and trade.TradeType=?  ";
+		 Query query = this.getSession().createQuery(hql).setParameter(0, UserId).setParameter(1, StockId).setParameter(2, TradeType);
+		return query.list();
+	}
+	
+	//根据交易id查询挂单
+	public Trade queryByTradeId(int tradeid) {
+		 
+		return (Trade) this.getHibernateTemplate().get(Trade.class, tradeid);
+	}
+
+}

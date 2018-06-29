@@ -1,0 +1,39 @@
+package com.gem.vsts.biz.impl;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.biz.CompanyProfileBiz;
+import com.gem.vsts.dao.CompanyProfileDao;
+import com.gem.vsts.pojo.Companyprofile;
+
+/**
+ * 
+ * @author zjf
+ *
+ */
+@Transactional
+public class CompanyProfileBizImpl implements CompanyProfileBiz{
+	
+	private CompanyProfileDao companyprofiledao;
+	
+	public void setCompanyprofiledao(CompanyProfileDao companyprofiledao) {
+		this.companyprofiledao = companyprofiledao;
+	}
+
+	public void addCP(Companyprofile companyprofile) {
+		// TODO Auto-generated method stub
+		companyprofiledao.addCP(companyprofile);
+	}
+
+	public Companyprofile querybyid(int companyid) {
+		// TODO Auto-generated method stub
+		return companyprofiledao.querybyid(companyid);
+	}
+
+	public void update(Companyprofile companyprofile) {
+		// TODO Auto-generated method stub
+		companyprofiledao.updateCP(companyprofile);
+	}
+	
+
+}

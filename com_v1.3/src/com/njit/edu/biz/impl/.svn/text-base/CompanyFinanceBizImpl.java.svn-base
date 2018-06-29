@@ -1,0 +1,38 @@
+package com.gem.vsts.biz.impl;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.biz.CompanyFinanceBiz;
+import com.gem.vsts.dao.CompanyFinanceDao;
+import com.gem.vsts.pojo.CompanyFinance;
+
+/**
+ * 
+ * @author zjf
+ *
+ */
+@Transactional
+public class CompanyFinanceBizImpl implements CompanyFinanceBiz{
+	
+	private CompanyFinanceDao companyfinancedao;
+	
+	public void setCompanyfinancedao(CompanyFinanceDao companyfinancedao)
+	{
+		this.companyfinancedao=companyfinancedao;
+	}
+	
+	public void addFC(CompanyFinance companyfinance) {
+		// TODO Auto-generated method stub
+		companyfinancedao.addCF(companyfinance);
+	}
+
+	public CompanyFinance querybyid(int financeid) {
+		return companyfinancedao.querybyid(financeid);
+	}
+
+	public void updateCF(CompanyFinance companyfinance) {
+		// TODO Auto-generated method stub
+		companyfinancedao.updateCF(companyfinance);
+	}
+	
+}

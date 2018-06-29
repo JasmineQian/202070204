@@ -1,0 +1,27 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="hibernate.connection.url">jdbc:sqlserver://10.10.1.15:1433;databaseName=vsts_team2</property>
+		<property name="hibernate.connection.password">123456</property>
+		<property name="hibernate.connection.username">sa</property>
+		
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="hibernate.show_sql">true</property>
+		
+		
+		<mapping resource="com/gem/vsts/pojo/xml/Administrator.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/CompanyFinance.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/Companyprofile.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/Stockinfo.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/Trade.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/TradeRecord.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/User.hbm.xml" />
+		<mapping resource="com/gem/vsts/pojo/xml/UserStockinfo.hbm.xml" />
+		
+		
+	</session-factory>
+</hibernate-configuration>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.njit.edu.pojo">
+
+	<class name="Materials" table="t_Materials">
+
+		<id name="MaterId" column="MaterId">
+			<generator class="identity" />
+		</id>
+
+		<property name="MaterChapter" column="MaterChapter" />
+
+		<property name="MaterName" column="MaterName" />
+
+		<property name="MaterContent" column="MaterContent" />
+		
+		<property name="MaterUPload" column="MaterUPload" />
+		
+		<property name="Updatetime" column="Updatetime" />
+		
+		<property name="Way" column="Way" />
+
+		<set name="load" inverse="true">
+		     	<key column="MaterId"/>
+		    		<one-to-many class="DownLoad"/>
+		</set>
+		
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,56 @@
+package com.gem.vsts.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.Query;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.AdministratorDao;
+import com.gem.vsts.pojo.Administrator;
+
+@Transactional
+public class AdministratorDaoImpl extends HibernateDaoSupport implements
+		AdministratorDao {
+
+	// 添加管理员
+	public boolean saveAdmin(Administrator Admin) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(Admin);
+		return true;
+	}
+
+	// 删除管理员
+	public void delAdmin(Administrator Admin) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().delete(Admin);
+	}
+
+	// 修改管理员
+	public void modifyAdmin(Administrator Admin) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().update(Admin);
+	}
+
+	// 查询所有管理员
+	public List queryAllAdmin() {
+		// TODO Auto-generated method stub
+		return this.getHibernateTemplate().find("from Administrator");
+	}
+
+	// 按管理员ID查询管理员
+	public Administrator queryAdminById(int AdminID) {
+		// TODO Auto-generated method stub
+		return (Administrator) this.getHibernateTemplate().get(
+				Administrator.class, AdminID);
+	}
+
+	public Administrator queryAdminByName(String AdminName) {
+		// TODO Auto-generated method stub
+		String hql = "from Administrator Admin where Admin.ManagerName=?";
+		Query query = this.getSession().createQuery(hql).setParameter(0,
+				AdminName);
+		return (Administrator) query.uniqueResult();
+	}
+
+}

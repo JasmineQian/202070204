@@ -1,0 +1,60 @@
+package com.gem.vsts.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.Query;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.gem.vsts.dao.UserStockinfoDao;
+import com.gem.vsts.pojo.Stockinfo;
+import com.gem.vsts.pojo.User;
+import com.gem.vsts.pojo.UserStockinfo;
+
+/**
+ * 股票信息Dao层实现类。
+ * @author zjf
+ *
+ */
+@Transactional
+public class UserStockinfoDaoImpl extends HibernateDaoSupport implements UserStockinfoDao{
+	
+	//增加持有股票
+	public void addUserStockinfo(UserStockinfo userstockinfo) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().save(userstockinfo);
+		System.out.print("添加操作");
+	}
+	
+	//删除持有股票
+	public void delUserStockinfo(int DealId) {
+		// TODO Auto-generated method stub
+		UserStockinfo usi=(UserStockinfo) this.getHibernateTemplate().get(UserStockinfo.class, DealId);
+		this.getHibernateTemplate().delete(usi);
+		System.out.print("删除操作");
+	}
+	
+	
+	//查询用户持有的所有股票
+	public List queryAllUserStockinfo(int userId) {
+		// TODO Auto-generated method stub
+		List list = this.getHibernateTemplate().find("from UserStockinfo usi where usi.user.UserId="+userId);
+		System.out.print("查询操作");
+		return list;
+		
+	}
+	
+	//通过股票代码查询用户持有股票
+	public UserStockinfo queryUserStockinfoById(int UserId,String stockId) {
+		String hql = "from UserStockinfo usi where usi.stockinfo.stockId=? and usi.user.UserId=?";
+		Query query = this.getSession().createQuery(hql).setParameter(0, stockId).setParameter(1, UserId);
+		return (UserStockinfo)query.uniqueResult();
+	}
+
+	public void modifyUserStockinfo(UserStockinfo UserStockinfo) {
+		// TODO Auto-generated method stub
+		this.getHibernateTemplate().update(UserStockinfo);
+	}
+    
+
+}

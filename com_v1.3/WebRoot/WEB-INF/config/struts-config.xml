@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+<struts-config>
+	<form-beans>
+
+		<!-- 用户表 -->
+		<form-bean name="UserForm"
+			type="com.njit.edu.form.UserActionForm">
+		</form-bean>
+		<!-- 管理员表 -->
+		<form-bean name="AdminForm"
+			type="com.njit.edu.form.AdminActionForm">
+		</form-bean>
+		<!-- 资料表 -->
+		<form-bean name="MaterialsForm"
+			type="com.njit.edu.form.MaterialsActionForm">
+		</form-bean>
+		<!-- 链接信息表 -->
+		<form-bean name="LinkinfoForm"
+			type="com.njit.edu.form.LinkinfoActionForm">
+		</form-bean>
+		<!-- 下载记录表 -->
+		<form-bean name="DownLoadForm"
+			type="com.njit.edu.form.DownLoadActionForm">
+		</form-bean>
+
+
+	</form-beans>
+
+	<global-forwards>
+
+		<!-- 定向错误页面 -->
+		<forward name="error" path="/error.jsp" />
+		<forward name="bgError" path="/bgError.jsp"></forward>
+		<forward name="success" path="/viewPage.do?targetPage=1"
+			redirect="true" />
+
+		<!-- 定向成功页面 -->
+		<forward name="MS_success" path="/success.jsp" />
+
+		<!-- 通过redirect从新分发请求来防止页面刷新重复提交 -->
+		<!-- <forward name="success" path="/user/list.do?mothod=queryAll" redirect="true" ></forward> -->
+	</global-forwards>
+
+	<action-mappings>
+		<action path="/user" name="UserForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<!--  
+				<forward name="register_success" path="/index.jsp" />
+				<forward name="register_fail" path="/error.jsp" />
+				<forward name="register_samename" path="/error.jsp" />
+			-->
+			<forward name="modifypassworderror" path="/message.jsp" />
+			<forward name="modifypassword" path="/message.jsp" />
+			<forward name="querysession_false" path="/message.jsp" />
+			<forward name="querysession_success" path="/fg-information.jsp" />
+			<forward name="login_success" path="/download.do?method=mydownload" />
+			<forward name="login_error" path="/error.jsp" />
+			<forward name="modify_false" path="/message.jsp" />
+			<!--<forward name="modifypassword_false" path="/message.jsp" />-->
+			<forward name="modify_success" path="/message.jsp" />
+			<forward name="queryall_success" path="/bg-selectMember.jsp" />
+			<forward name="querybyid_success" path="/bg-member.jsp" />
+			<forward name="del_success" path="/user.do?method=queryall" />
+			<forward name="exit" path="/fg-login.jsp" />
+		</action>
+		
+		<action path="/download" name="DownLoadForm"
+		type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			 <forward name="viewload_false" path="/message.jsp"/>
+			<forward name="mydownload" path="/fg-mydownload.jsp"/>
+		</action>
+		
+		<action path="/mater" name="MaterialsForm"
+		type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<forward name="mater" path="/fg-materials1.jsp"/>
+			<forward name="materChapter" path="/fg-materials.jsp"/>
+			<forward name="maternew" path="/fg-maternew.jsp"/>
+		</action>
+		
+		
+		
+		<action path="/userLinkinfo" name="LinkinfoForm"
+		type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method"> 
+			<forward name="userlink" path="/fg-linkinfo.jsp"/>
+			<forward name="userqueryAllplay" path="/fg-play.jsp"/>
+		</action>
+
+		<!-- 验证码 -->
+		<action path="/check" type="com.njit.edu.action.UserValidate"
+			scope="request">
+			<!-- <forward name="validate" path="/check.jsp"></forward> -->
+		</action>
+
+
+		<!-- 管理员 -->
+		<action path="/admin" name="AdminForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<forward name="login_success"
+				path="/linkinfo.do?method=queryAllLinkinfo">
+			</forward>
+			<forward name="modify_success"
+				path="/message.jsp">
+			</forward>
+		</action>
+
+		<!-- 链接的 -->
+		<action path="/linkinfo" name="LinkinfoForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<forward name="modifyLinkinfo"
+				path="/linkinfo.do?method=queryAllLinkinfo" />
+			<forward name="sss" path="/bg-LinkinfoSelect.jsp" />
+			<forward name="userlink" path="/fg-linkinfo.jsp" />
+			<forward name="addLinkinfo_success" path="/linkinfo.do?method=queryAllLinkinfo" redirect="true" />
+			<forward name="queryLinkinfoById_success" path="/bg-LinkinfoModify.jsp" />
+			<forward name="delLinkinfo_sucess" path="/linkinfo.do?method=queryAllLinkinfo" />
+		</action>
+
+		<!-- 用户的 -->
+		<action path="/userinfo" name="UserForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<forward name="suc" path="/bg-UserSelect.jsp" />
+			<forward name="queryUserDetails" path="/bg-UserSelectIn.jsp"/>
+			<forward name="del" path="/userinfo.do?method=queryUsers" />
+		</action>
+
+		<!-- 资料的 -->
+		<action path="/materinfo" name="MaterialsForm"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			scope="request" parameter="method">
+			<forward name="queryMaters" path="/bg-MaterialsSelect.jsp" />
+			<forward name="delMaters"   path="/materinfo.do?method=queryMaters" />
+			<forward name="queryMaterById"  path="/bg-MaterialsModify.jsp" />
+			<forward name="modifyMater" path="/materinfo.do?method=queryMaters" />
+			<forward name="addMaters"  	path="/materinfo.do?method=queryMaters" redirect="true"/>
+		</action>
+
+	</action-mappings>
+
+	<message-resources parameter="application" />
+
+</struts-config>

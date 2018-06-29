@@ -1,0 +1,32 @@
+package com.gem.vsts.biz.impl;
+
+import com.gem.vsts.biz.StockBussinessBiz;
+import com.gem.vsts.dao.StockBussinessDao;
+
+public class StockBussinessBizImpl implements StockBussinessBiz{
+  
+	
+	private StockBussinessDao stockbussinessDao;
+	   
+	//委托买入操作
+	public void BuyProxyStock(int UserId,String StockId,double BuyPrice,int BuyCount){
+		stockbussinessDao.BuyProxyStock(UserId, StockId, BuyPrice, BuyCount);
+		
+	}
+	//实时买入操作
+	public void BuyNowStock(int UserId,String StockId,double MinPrice,int BuyCount){
+		stockbussinessDao.BuyNowStock(UserId, StockId, MinPrice, BuyCount);
+	}
+    //实时卖出操作
+	public void SellNowStock(int UserId,String StockId, double NowPrice, int SellCount){
+		stockbussinessDao.SellNowStock(UserId, StockId, NowPrice, SellCount);
+	}
+    //委托卖出操作
+	public void SellProxyStock(int UserId,String StockId, double SellPrice, int SellCount){
+		stockbussinessDao.SellProxyStock(UserId, StockId, SellPrice, SellCount);
+		
+	}
+	public void setStockbussinessDao(StockBussinessDao stockbussinessDao) {
+		this.stockbussinessDao = stockbussinessDao;
+	}
+}
